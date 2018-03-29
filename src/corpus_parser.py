@@ -1,4 +1,4 @@
-from nltk.tokenize import RegexpTokenizer
+# from nltk.tokenize import RegexpTokenizer
 import os
 import numpy as np
 import logging

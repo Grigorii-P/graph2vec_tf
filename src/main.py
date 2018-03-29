@@ -1,6 +1,9 @@
 import argparse,os,logging,psutil,time
 from joblib import Parallel,delayed
 
+#TODO choose gpu
+os.environ["CUDA_VISIBLE_DEVICES"]="0"
+
 from utils import get_files
 from train_utils import train_skipgram
 from classify import perform_classification
@@ -71,22 +74,25 @@ def parse_args():
     args.add_argument('-b',"--batch_size", default=128, type=int,
                       help="Number of samples per training batch")
 
-    args.add_argument('-e',"--epochs", default=1000, type=int,
+    # TODO changed: 200 for 1000
+    args.add_argument('-e',"--epochs", default=200, type=int,
                       help="Number of iterations the whole dataset of graphs is traversed")
 
     args.add_argument('-d',"--embedding_size", default=1024, type=int,
                       help="Intended graph embedding size to be learnt")
 
+    #TODO may be worth changing neg samples
     args.add_argument('-neg', "--num_negsample", default=10, type=int,
                       help="Number of negative samples to be used for training")
 
     args.add_argument('-lr', "--learning_rate", default=0.3, type=float,
                       help="Learning rate to optimize the loss function")
 
+    # TODO may be worth changing depth degree
     args.add_argument("--wlk_h", default=3, type=int, help="Height of WL kernel (i.e., degree of rooted subgraph "
                                                            "features to be considered for representation learning)")
-
-    args.add_argument('-lf', '--label_filed_name', default='Label', help='Label field to be used '
+    #TODO changed: 'label' for 'Label'
+    args.add_argument('-lf', '--label_filed_name', default='label', help='Label field to be used '
                                                                          'for coloring nodes in graphs using WL kenrel')
 
     return args.parse_args()
