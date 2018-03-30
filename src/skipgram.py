@@ -74,6 +74,13 @@ class skipgram(object):
         with tf.Session(graph=self.graph,
                         config=tf.ConfigProto(log_device_placement=True,allow_soft_placement=False)) as sess:
 
+            # tf.summary.scalar('loss', self.loss)
+            #
+            # log_path = '/Users/grigoriipogorelov/Desktop/KL_graph_embeddings/logs_tensorboard'
+            # train_writer = tf.summary.FileWriter(log_path, sess.graph)
+            #
+            # merge = tf.summary.merge_all()
+
             init = tf.global_variables_initializer()
             sess.run(init)
 
@@ -86,7 +93,10 @@ class skipgram(object):
                     batch_data, batch_labels = corpus.generate_batch_from_file(batch_size)# get (target,context) wordid tuples
 
                     feed_dict = {self.batch_inputs:batch_data,self.batch_labels:batch_labels}
-                    _,loss_val = sess.run([self.optimizer,self.loss],feed_dict=feed_dict)
+                    # summary, _,loss_val = sess.run([merge, self.optimizer,self.loss],feed_dict=feed_dict)
+                    _, loss_val = sess.run([self.optimizer, self.loss], feed_dict=feed_dict)
+
+                    # train_writer.add_summary(summary)
 
                     loss += loss_val
 

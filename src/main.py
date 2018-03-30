@@ -38,7 +38,8 @@ def main(args):
     assert os.path.exists(corpus_dir), "File {} does not exist".format(corpus_dir)
     assert os.path.exists(output_dir), "Dir {} does not exist".format(output_dir)
 
-    graph_files = get_files(dirname=corpus_dir, extn='.gexf', max_files=0)
+    #TODO changed max files size
+    graph_files = get_files(dirname=corpus_dir, extn='.gexf', max_files=100000)
     logging.info('Loaded {} graph file names form {}'.format(len(graph_files),corpus_dir))
 
 
@@ -51,7 +52,7 @@ def main(args):
                                      epochs, batch_size, output_dir)
     logging.info('Trained the skipgram model in {} sec.'.format(round(time()-t0, 2)))
 
-    perform_classification (corpus_dir, wl_extn, embedding_fname, class_labels_fname)
+    # perform_classification (corpus_dir, wl_extn, embedding_fname, class_labels_fname)
 
 
 
@@ -74,11 +75,12 @@ def parse_args():
     args.add_argument('-b',"--batch_size", default=128, type=int,
                       help="Number of samples per training batch")
 
-    # TODO changed: 200 for 1000
-    args.add_argument('-e',"--epochs", default=200, type=int,
+    #TODO changed: 1000 for 50
+    args.add_argument('-e',"--epochs", default=50, type=int,
                       help="Number of iterations the whole dataset of graphs is traversed")
 
-    args.add_argument('-d',"--embedding_size", default=1024, type=int,
+    #TODO changed: 1024 for 300
+    args.add_argument('-d',"--embedding_size", default=300, type=int,
                       help="Intended graph embedding size to be learnt")
 
     #TODO may be worth changing neg samples
@@ -88,10 +90,10 @@ def parse_args():
     args.add_argument('-lr', "--learning_rate", default=0.3, type=float,
                       help="Learning rate to optimize the loss function")
 
-    # TODO may be worth changing depth degree
+    #TODO may be worth changing depth degree
     args.add_argument("--wlk_h", default=3, type=int, help="Height of WL kernel (i.e., degree of rooted subgraph "
                                                            "features to be considered for representation learning)")
-    #TODO changed: 'label' for 'Label'
+    #TODO changed: 'Label' for 'label'
     args.add_argument('-lf', '--label_filed_name', default='label', help='Label field to be used '
                                                                          'for coloring nodes in graphs using WL kenrel')
 
