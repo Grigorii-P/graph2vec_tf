@@ -74,18 +74,19 @@ class skipgram(object):
         with tf.Session(graph=self.graph,
                         config=tf.ConfigProto(log_device_placement=True,allow_soft_placement=False)) as sess:
 
-            # tf.summary.scalar('loss', self.loss)
-            #
-            # log_path = '/Users/grigoriipogorelov/Desktop/KL_graph_embeddings/logs_tensorboard'
-            # train_writer = tf.summary.FileWriter(log_path, sess.graph)
-            #
-            # merge = tf.summary.merge_all()
+            count = 0
+            tf.summary.scalar('loss', self.loss)
+            tf.summary.scalar('count', count)
+
+            log_path = '/home/pogorelov/work/logs_tensorboard'
+            train_writer = tf.summary.FileWriter(log_path, sess.graph)
+
+            merge = tf.summary.merge_all()
 
             init = tf.global_variables_initializer()
             sess.run(init)
 
             loss = 0
-
             for i in xrange(self.num_steps):
                 t0 = time()
                 step = 0
@@ -93,10 +94,10 @@ class skipgram(object):
                     batch_data, batch_labels = corpus.generate_batch_from_file(batch_size)# get (target,context) wordid tuples
 
                     feed_dict = {self.batch_inputs:batch_data,self.batch_labels:batch_labels}
-                    # summary, _,loss_val = sess.run([merge, self.optimizer,self.loss],feed_dict=feed_dict)
-                    _, loss_val = sess.run([self.optimizer, self.loss], feed_dict=feed_dict)
+                    summary, _,loss_val = sess.run([merge, self.optimizer,self.loss],feed_dict=feed_dict)
+                    # _, loss_val = sess.run([self.optimizer, self.loss], feed_dict=feed_dict)
 
-                    # train_writer.add_summary(summary)
+                    train_writer.add_summary(summary)
 
                     loss += loss_val
 
@@ -105,6 +106,7 @@ class skipgram(object):
                             average_loss = loss/step
                             logging.info( 'Epoch: %d : Average loss for step: %d : %f'%(i,step,average_loss))
                     step += 1
+                    count += 1
 
                 corpus.epoch_flag = False
                 epoch_time = time() - t0
