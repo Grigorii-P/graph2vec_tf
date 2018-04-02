@@ -2,7 +2,7 @@ import argparse,os,logging,psutil,time
 from joblib import Parallel,delayed
 
 #TODO choose gpu
-os.environ["CUDA_VISIBLE_DEVICES"]="0"
+#os.environ["CUDA_VISIBLE_DEVICES"]="0"
 
 from utils import get_files
 from train_utils import train_skipgram
@@ -38,8 +38,8 @@ def main(args):
     assert os.path.exists(corpus_dir), "File {} does not exist".format(corpus_dir)
     assert os.path.exists(output_dir), "Dir {} does not exist".format(output_dir)
 
-    #TODO changed max files size
-    graph_files = get_files(dirname=corpus_dir, extn='.gexf', max_files=100000)
+    
+    graph_files = get_files(dirname=corpus_dir, extn='.gexf', max_files=0)
     logging.info('Loaded {} graph file names form {}'.format(len(graph_files),corpus_dir))
 
 
