@@ -145,7 +145,7 @@ def wlk_relabel_and_dump_memory_version(fnames,max_h,node_label_attr_name='Label
     	try:
     		temp = nx.read_gexf(fname)
     		graphs.append(temp)
-    	except cElementTree.ParseError:
+    	except:
     		pass
 
     print 'loaded all graphs in {} sec'.format(round(time() - t0, 2))
