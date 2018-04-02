@@ -76,9 +76,10 @@ class skipgram(object):
 
             count = 0
             tf.summary.scalar('loss', self.loss)
-            tf.summary.scalar('count', count)
+            # tf.summary.scalar('count', count)
 
             log_path = '/home/pogorelov/work/logs_tensorboard'
+            # log_path = '/Users/grigoriipogorelov/Desktop/KL_graph_embeddings/logs_tensorboard'
             train_writer = tf.summary.FileWriter(log_path, sess.graph)
 
             merge = tf.summary.merge_all()
@@ -97,7 +98,7 @@ class skipgram(object):
                     summary, _,loss_val = sess.run([merge, self.optimizer,self.loss],feed_dict=feed_dict)
                     # _, loss_val = sess.run([self.optimizer, self.loss], feed_dict=feed_dict)
 
-                    train_writer.add_summary(summary)
+                    train_writer.add_summary(summary, count)
 
                     loss += loss_val
 
@@ -105,8 +106,8 @@ class skipgram(object):
                         if step > 0:
                             average_loss = loss/step
                             logging.info( 'Epoch: %d : Average loss for step: %d : %f'%(i,step,average_loss))
+                            count += 1
                     step += 1
-                    count += 1
 
                 corpus.epoch_flag = False
                 epoch_time = time() - t0

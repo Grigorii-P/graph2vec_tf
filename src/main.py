@@ -75,8 +75,8 @@ def parse_args():
     args.add_argument('-b',"--batch_size", default=128, type=int,
                       help="Number of samples per training batch")
 
-    #TODO changed: 1000 for 50
-    args.add_argument('-e',"--epochs", default=50, type=int,
+    #TODO changed: 1000 for 100
+    args.add_argument('-e',"--epochs", default=100, type=int,
                       help="Number of iterations the whole dataset of graphs is traversed")
 
     #TODO changed: 1024 for 300
