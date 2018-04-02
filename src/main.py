@@ -38,8 +38,8 @@ def main(args):
     assert os.path.exists(corpus_dir), "File {} does not exist".format(corpus_dir)
     assert os.path.exists(output_dir), "Dir {} does not exist".format(output_dir)
 
-    
-    graph_files = get_files(dirname=corpus_dir, extn='.gexf', max_files=0)
+    #TODO changed 0 for 100 000
+    graph_files = get_files(dirname=corpus_dir, extn='.gexf', max_files=100000)
     logging.info('Loaded {} graph file names form {}'.format(len(graph_files),corpus_dir))
 
 
@@ -75,8 +75,8 @@ def parse_args():
     args.add_argument('-b',"--batch_size", default=128, type=int,
                       help="Number of samples per training batch")
 
-    #TODO changed: 1000 for 100
-    args.add_argument('-e',"--epochs", default=100, type=int,
+    #TODO changed: 1000 for 20
+    args.add_argument('-e',"--epochs", default=20, type=int,
                       help="Number of iterations the whole dataset of graphs is traversed")
 
     #TODO changed: 1024 for 300

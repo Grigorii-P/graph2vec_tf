@@ -139,7 +139,15 @@ def wlk_relabel_and_dump_memory_version(fnames,max_h,node_label_attr_name='Label
     global label_to_compressed_label_map
 
     t0 = time()
-    graphs = [nx.read_gexf(fname) for fname in fnames]
+    # graphs = [nx.read_gexf(fname) for fname in fnames]
+    graphs = []
+    for fname in fnames:
+    	try:
+    		temp = nx.read_gexf(fname)
+    		graphs.append(temp)
+    	except cElementTree.ParseError:
+    		pass
+
     print 'loaded all graphs in {} sec'.format(round(time() - t0, 2))
 
     t0 = time()
