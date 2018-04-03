@@ -141,10 +141,15 @@ def wlk_relabel_and_dump_memory_version(fnames,max_h,node_label_attr_name='Label
     t0 = time()
     # graphs = [nx.read_gexf(fname) for fname in fnames]
     graphs = []
+    count = 0
     for fname in fnames:
     	try:
+    		if count % 1000 == 0:
+    			print c
     		temp = nx.read_gexf(fname)
     		graphs.append(temp)
+    		if len(graphs) % 1000 == 0:
+    			print 'yahoo'
     	except:
     		pass
 
