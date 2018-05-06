@@ -1,7 +1,7 @@
 import argparse,os,logging,psutil,time
 from joblib import Parallel,delayed
 
-os.environ["CUDA_VISIBLE_DEVICES"]="0"
+#os.environ["CUDA_VISIBLE_DEVICES"]="0"
 
 from utils import get_files
 from train_utils import train_skipgram
