@@ -1,7 +1,6 @@
 import argparse,os,logging,psutil,time
 from joblib import Parallel,delayed
 
-#TODO choose gpu
 os.environ["CUDA_VISIBLE_DEVICES"]="0"
 
 from utils import get_files
@@ -38,8 +37,7 @@ def main(args):
     assert os.path.exists(corpus_dir), "File {} does not exist".format(corpus_dir)
     assert os.path.exists(output_dir), "Dir {} does not exist".format(output_dir)
 
-    #TODO changed max files size
-    graph_files = get_files(dirname=corpus_dir, extn='.gexf', max_files=100000)
+    graph_files = get_files(dirname=corpus_dir, extn='.gexf', max_files=0)
     logging.info('Loaded {} graph file names form {}'.format(len(graph_files),corpus_dir))
 
 
@@ -75,25 +73,21 @@ def parse_args():
     args.add_argument('-b',"--batch_size", default=128, type=int,
                       help="Number of samples per training batch")
 
-    #TODO changed: 1000 for 100
     args.add_argument('-e',"--epochs", default=100, type=int,
                       help="Number of iterations the whole dataset of graphs is traversed")
 
-    #TODO changed: 1024 for 300
     args.add_argument('-d',"--embedding_size", default=300, type=int,
                       help="Intended graph embedding size to be learnt")
 
-    #TODO may be worth changing neg samples
     args.add_argument('-neg', "--num_negsample", default=10, type=int,
                       help="Number of negative samples to be used for training")
 
     args.add_argument('-lr', "--learning_rate", default=0.3, type=float,
                       help="Learning rate to optimize the loss function")
 
-    #TODO may be worth changing depth degree
     args.add_argument("--wlk_h", default=3, type=int, help="Height of WL kernel (i.e., degree of rooted subgraph "
                                                            "features to be considered for representation learning)")
-    #TODO changed: 'Label' for 'label'
+
     args.add_argument('-lf', '--label_filed_name', default='label', help='Label field to be used '
                                                                          'for coloring nodes in graphs using WL kenrel')
 

@@ -33,8 +33,8 @@ class skipgram(object):
             batch_graph_embeddings = tf.nn.embedding_lookup(graph_embeddings, batch_inputs) #hiddeb layer
 
             weights = tf.Variable(tf.truncated_normal([self.num_subgraphs, self.embedding_size],
-                                                          stddev=1.0 / math.sqrt(self.embedding_size))) #output layer wt
-            biases = tf.Variable(tf.zeros(self.num_subgraphs)) #output layer biases
+                                                          stddev=1.0 / math.sqrt(self.embedding_size)), name='weights') #output layer wt
+            biases = tf.Variable(tf.zeros(self.num_subgraphs), name='bias') #output layer biases
 
             #negative sampling part
             loss = tf.reduce_mean(
@@ -64,8 +64,9 @@ class skipgram(object):
             optimizer = tf.train.GradientDescentOptimizer(learning_rate).minimize(loss,global_step=global_step)
 
             norm = tf.sqrt(tf.reduce_mean(tf.square(graph_embeddings), 1, keep_dims=True))
-            normalized_embeddings = graph_embeddings/norm
+            normalized_embeddings = tf.Variable(graph_embeddings / norm, name='normalized_embeddings')
 
+            self.saver = tf.train.Saver()
         return graph,batch_inputs, batch_labels, normalized_embeddings, loss, optimizer
 
 
@@ -116,4 +117,5 @@ class skipgram(object):
 
             #done with training
             final_embeddings = self.normalized_embeddings.eval()
+            self.saver.save(sess, "/Users/grigoriipogorelov/Desktop/model_saver/model")
         return final_embeddings
