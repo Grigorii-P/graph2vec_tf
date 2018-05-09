@@ -117,5 +117,5 @@ class skipgram(object):
 
             #done with training
             final_embeddings = self.normalized_embeddings.eval()
-            self.saver.save(sess, "/Users/grigoriipogorelov/Desktop/model_saver/model")
+            self.saver.save(sess, "/home/pogorelov/model_tf/model")
         return final_embeddings
