@@ -24,6 +24,12 @@ class skipgram(object):
     def trainer_initial(self):
         graph = tf.Graph()
         with graph.as_default():
+
+            path = '/home/pogorelov/model_tf/'
+            sess = tf.Session()
+            saver = tf.train.import_meta_graph(path + 'model.meta')
+            saver.restore(sess, tf.train.latest_checkpoint(path))
+
             batch_inputs = tf.placeholder(tf.int32, shape=([None, ]))
             batch_labels = tf.placeholder(tf.int64, shape=([None, 1]))
 
@@ -32,9 +38,8 @@ class skipgram(object):
 
             batch_graph_embeddings = tf.nn.embedding_lookup(graph_embeddings, batch_inputs) #hiddeb layer
 
-            weights = tf.Variable(tf.truncated_normal([self.num_subgraphs, self.embedding_size],
-                                                          stddev=1.0 / math.sqrt(self.embedding_size)), name='weights') #output layer wt
-            biases = tf.Variable(tf.zeros(self.num_subgraphs), name='bias') #output layer biases
+            weights = tf.Variable(graph.get_tensor_by_name("weights:0"), trainable=False, name='weights')  # output layer wt
+            biases = tf.Variable(graph.get_tensor_by_name("bias:0"), trainable=False)  # output layer biases
 
             #negative sampling part
             loss = tf.reduce_mean(
@@ -79,7 +84,7 @@ class skipgram(object):
             tf.summary.scalar('loss', self.loss)
             # tf.summary.scalar('count', count)
 
-            log_path = '/home/pogorelov/work/logs_tensorboard'
+            log_path = '/home/pogorelov/work/logs_tensorboard_2'
             # log_path = '/Users/grigoriipogorelov/Desktop/KL_graph_embeddings/logs_tensorboard'
             train_writer = tf.summary.FileWriter(log_path, sess.graph)
 
@@ -97,7 +102,6 @@ class skipgram(object):
 
                     feed_dict = {self.batch_inputs:batch_data,self.batch_labels:batch_labels}
                     summary, _,loss_val = sess.run([merge, self.optimizer,self.loss],feed_dict=feed_dict)
-                    # _, loss_val = sess.run([self.optimizer, self.loss], feed_dict=feed_dict)
 
                     train_writer.add_summary(summary, count)
 
@@ -117,5 +121,5 @@ class skipgram(object):
 
             #done with training
             final_embeddings = self.normalized_embeddings.eval()
-            self.saver.save(sess, "/home/pogorelov/model_tf/model")
+            self.saver.save(sess, "/home/pogorelov/model_tf_2/model")
         return final_embeddings

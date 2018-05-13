@@ -6,7 +6,8 @@ from joblib import Parallel,delayed
 from utils import get_files
 from train_utils import train_skipgram
 from classify import perform_classification
-from make_graph2vec_corpus import *
+# from make_graph2vec_corpus import *
+from unseen_graphs_relabelibg import *
 from time import time
 
 logger = logging.getLogger()
