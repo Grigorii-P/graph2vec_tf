@@ -159,15 +159,15 @@ def wlk_relabel_and_dump_memory_version(fnames,max_h,node_label_attr_name='Label
         pickle.dump(to_file_dict, file)
     print 'initial relabeling done in {} sec'.format(round(time() - t0, 2))
 
-    for it in xrange(1, max_h + 1):
-        t0 = time()
-        label_to_compressed_label_map = {}
-        graphs = [wl_relabel(g, it) for g in graphs]
-        print 'WL iteration {} done in {} sec.'.format(it, round(time() - t0, 2))
-        print 'num of WL rooted subgraphs in iter {} is {}'.format(it, len(label_to_compressed_label_map))
-        to_file_dict = {k: v for k, v in label_to_compressed_label_map.items()}
-        with open('/home/pogorelov/subgraphs_vocab/degree' + str(it) + '.txt', 'w') as file:
-            pickle.dump(to_file_dict, file)
+    # for it in xrange(1, max_h + 1):
+    #     t0 = time()
+    #     label_to_compressed_label_map = {}
+    #     graphs = [wl_relabel(g, it) for g in graphs]
+    #     print 'WL iteration {} done in {} sec.'.format(it, round(time() - t0, 2))
+    #     print 'num of WL rooted subgraphs in iter {} is {}'.format(it, len(label_to_compressed_label_map))
+    #     to_file_dict = {k: v for k, v in label_to_compressed_label_map.items()}
+    #     with open('/home/pogorelov/subgraphs_vocab/degree' + str(it) + '.txt', 'w') as file:
+    #         pickle.dump(to_file_dict, file)
 
     t0 = time()
     for fname, g in zip(fnames, graphs):
