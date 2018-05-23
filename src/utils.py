@@ -9,8 +9,8 @@ def get_files(dirname, extn, max_files=0):
                 all_files.append(os.path.join(root, f))
 
     path_to_labels = '/home/pogorelov/labels_2_and_0.txt'
-    with open(path_to_labels, 'rb') as file:
-        labels = pickle.load(file)
+    with open(path_to_labels, 'r') as file:
+        labels = json.loads(file.read())
     all_files = [x for x in all_files if (x.split('/')[-1]).split('.')[0] in labels]
 
     all_files = list(set(all_files))
