@@ -19,7 +19,7 @@ def initial_relabel(g,node_label_attr_name='Label'):
         g = nx.read_gexf(g)
     except:
         opfname = None
-        pass
+        return
 
     nx.convert_node_labels_to_integers(g, first_label=0)  # this needs to be done for the initial interation only
     for node in g.nodes(): g.node[node]['relabel'] = {}
@@ -123,6 +123,11 @@ def wlk_relabel_and_dump_hdd_version(fnames,max_h,node_label_attr_name='Label'):
     global label_to_compressed_label_map
 
     for fname in fnames: initial_relabel(fname,node_label_attr_name)
+    t0 = time()
+    to_file_dict = {k: v for k, v in label_to_compressed_label_map.items()}
+    with open('/home/pogorelov/subgraphs_vocab/initial_relab.txt', 'w') as file:
+        pickle.dump(to_file_dict, file)
+    print 'initial relabeling done in {} sec'.format(round(time() - t0, 2))
 
     # for it in xrange(1, max_h + 1):
     #     t0 = time()
