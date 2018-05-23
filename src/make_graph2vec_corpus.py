@@ -124,12 +124,12 @@ def wlk_relabel_and_dump_hdd_version(fnames,max_h,node_label_attr_name='Label'):
 
     for fname in fnames: initial_relabel(fname,node_label_attr_name)
 
-    for it in xrange(1, max_h + 1):
-        t0 = time()
-        label_to_compressed_label_map = {}
-        for fname in fnames: wl_relabel(fname,it)
-        print 'WL iteration {} done in {} sec.'.format(it, round(time() - t0, 2))
-        print 'num of WL rooted subgraphs in iter {} is {}'.format(it, len(label_to_compressed_label_map))
+    # for it in xrange(1, max_h + 1):
+    #     t0 = time()
+    #     label_to_compressed_label_map = {}
+    #     for fname in fnames: wl_relabel(fname,it)
+    #     print 'WL iteration {} done in {} sec.'.format(it, round(time() - t0, 2))
+    #     print 'num of WL rooted subgraphs in iter {} is {}'.format(it, len(label_to_compressed_label_map))
 
     t0 = time()
     for fname in fnames: dump_sg2vec_str(fname,max_h)

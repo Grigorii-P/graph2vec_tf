@@ -42,7 +42,7 @@ def main(args):
 
 
     t0 = time()
-    wlk_relabel_and_dump_memory_version(graph_files, max_h=wlk_h, node_label_attr_name=label_filed_name)
+    wlk_relabel_and_dump_hdd_version(graph_files, max_h=wlk_h, node_label_attr_name=label_filed_name)
     logging.info('dumped sg2vec sentences in {} sec.'.format(time() - t0))
 
     t0 = time()
