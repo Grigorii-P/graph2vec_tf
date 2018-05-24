@@ -79,7 +79,10 @@ def wl_relabel(g, it):
 
 def dump_sg2vec_str (fname,max_h,g=None):
     if not g:
-        g = nx.read_gexf(fname+'.tmpg')
+        try:
+            g = nx.read_gexf(fname+'.tmpg')
+        except:
+            return
         new_g = deepcopy(g)
         for n in g.nodes():
             del new_g.nodes[n]['relabel']
