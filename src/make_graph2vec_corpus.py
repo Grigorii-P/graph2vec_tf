@@ -9,10 +9,22 @@ import pickle
 
 label_to_compressed_label_map = {}
 
+
+path_to_dict = '/home/pogorelov/dict.txt'
+with open(path_to_dict, 'rb') as file:
+    dict_ = pickle.load(file)
+
+top_features = 20
+sort_dict = sorted(dict_.items(), key=lambda x: x[1], reverse=True)
+sort_dict = [x[0] for x in sort_dict]
+sort_dict = sort_dict[:top_features]
+
+
 get_int_node_label = lambda l: int(l.split('+')[-1])
 
 def initial_relabel(g,node_label_attr_name='Label'):
     global label_to_compressed_label_map
+    global sort_dict
 
     try:
         opfname = g+'.tmpg'
@@ -32,12 +44,14 @@ def initial_relabel(g,node_label_attr_name='Label'):
             g.node[node]['relabel'][0] = '0+0'
             continue
 
-        if not label_to_compressed_label_map.has_key(label):
+        if not label_to_compressed_label_map.has_key(label) and label in sort_dict:
             compressed_label = len(label_to_compressed_label_map) + 1 #starts with 1 and incremented every time a new node label is seen
             label_to_compressed_label_map[label] = compressed_label #inster the new label to the label map
             g.node[node]['relabel'][0] = '0+' + str(compressed_label)
-        else:
+        elif label_to_compressed_label_map.has_key(label) and label in sort_dict:
             g.node[node]['relabel'][0] = '0+' + str(label_to_compressed_label_map[label])
+        else:
+            g.node[node]['relabel'][0] = '0+0'
 
     if opfname:
         nx.write_gexf(g,opfname)
