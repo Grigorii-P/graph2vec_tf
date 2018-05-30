@@ -11,6 +11,9 @@ label_to_compressed_label_map = {}
 
 
 path_to_dict = '/home/pogorelov/dict.txt'
+path_initial_relab = '/home/pogorelov/subgraphs_vocab/initial_relab.txt'
+
+
 with open(path_to_dict, 'rb') as file:
     dict_ = pickle.load(file)
 
@@ -142,7 +145,7 @@ def wlk_relabel_and_dump_hdd_version(fnames,max_h,node_label_attr_name='Label'):
     for fname in fnames: initial_relabel(fname,node_label_attr_name)
     t0 = time()
     to_file_dict = {k: v for k, v in label_to_compressed_label_map.items()}
-    with open('/home/pogorelov/subgraphs_vocab/initial_relab.txt', 'w') as file:
+    with open(path_initial_relab, 'w') as file:
         pickle.dump(to_file_dict, file)
     print 'initial relabeling done in {} sec'.format(round(time() - t0, 2))
 
@@ -177,7 +180,7 @@ def wlk_relabel_and_dump_memory_version(fnames,max_h,node_label_attr_name='Label
     t0 = time()
     graphs = [initial_relabel(g,node_label_attr_name) for g in graphs]
     to_file_dict = {k: v for k, v in label_to_compressed_label_map.items()}
-    with open('/home/pogorelov/subgraphs_vocab/initial_relab.txt', 'w') as file:
+    with open(path_initial_relab, 'w') as file:
         pickle.dump(to_file_dict, file)
     print 'initial relabeling done in {} sec'.format(round(time() - t0, 2))
 

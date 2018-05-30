@@ -45,10 +45,10 @@ def main(args):
     wlk_relabel_and_dump_hdd_version(graph_files, max_h=wlk_h, node_label_attr_name=label_filed_name)
     logging.info('dumped sg2vec sentences in {} sec.'.format(time() - t0))
 
-    t0 = time()
-    embedding_fname = train_skipgram(corpus_dir, wl_extn, learning_rate, embedding_size, num_negsample,
-                                     epochs, batch_size, output_dir)
-    logging.info('Trained the skipgram model in {} sec.'.format(round(time()-t0, 2)))
+    # t0 = time()
+    # embedding_fname = train_skipgram(corpus_dir, wl_extn, learning_rate, embedding_size, num_negsample,
+    #                                  epochs, batch_size, output_dir)
+    # logging.info('Trained the skipgram model in {} sec.'.format(round(time()-t0, 2)))
 
     # perform_classification (corpus_dir, wl_extn, embedding_fname, class_labels_fname)
 
