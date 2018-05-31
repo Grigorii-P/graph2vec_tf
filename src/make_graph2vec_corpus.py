@@ -8,6 +8,10 @@ from copy import deepcopy
 import pickle
 
 label_to_compressed_label_map = {}
+degree_relab = {}
+
+path_initial_relab = '/home/pogorelov/subgraphs_vocab/initial_relab'
+path_degree_relab = '/home/pogorelov/subgraphs_vocab/degree_relab'
 
 get_int_node_label = lambda l: int(l.split('+')[-1])
 
@@ -19,7 +23,7 @@ def initial_relabel(g,node_label_attr_name='Label'):
         g = nx.read_gexf(g)
     except:
         opfname = None
-        pass
+        return
 
     nx.convert_node_labels_to_integers(g, first_label=0)  # this needs to be done for the initial interation only
     for node in g.nodes(): g.node[node]['relabel'] = {}
@@ -78,8 +82,13 @@ def wl_relabel(g, it):
         return g
 
 def dump_sg2vec_str (fname,max_h,g=None):
+    global degree_relab
+
     if not g:
-        g = nx.read_gexf(fname+'.tmpg')
+        try:
+            g = nx.read_gexf(fname + '.tmpg')
+        except:
+            return
         new_g = deepcopy(g)
         for n in g.nodes():
             del new_g.nodes[n]['relabel']
@@ -113,6 +122,12 @@ def dump_sg2vec_str (fname,max_h,g=None):
                 nei_list = ' '.join (nei_list)
 
                 sentence = center + ' ' + nei_list
+
+                if center in degree_relab:
+                    degree_relab[center] += 1
+                else:
+                    degree_relab[center] = 1
+
                 print>>fh, sentence
 
     if os.path.isfile(fname+'.tmpg'):
@@ -123,6 +138,11 @@ def wlk_relabel_and_dump_hdd_version(fnames,max_h,node_label_attr_name='Label'):
     global label_to_compressed_label_map
 
     for fname in fnames: initial_relabel(fname,node_label_attr_name)
+    t0 = time()
+    to_file_dict = {k: v for k, v in label_to_compressed_label_map.items()}
+    with open(path_initial_relab, 'wb') as file:
+        pickle.dump(to_file_dict, file)
+    print 'initial relabeling done in {} sec'.format(round(time() - t0, 2))
 
     for it in xrange(1, max_h + 1):
         t0 = time()
@@ -133,6 +153,8 @@ def wlk_relabel_and_dump_hdd_version(fnames,max_h,node_label_attr_name='Label'):
 
     t0 = time()
     for fname in fnames: dump_sg2vec_str(fname,max_h)
+    with open(path_degree_relab, 'wb') as file:
+        pickle.dump(degree_relab, file)
     print 'dumped sg2vec sentences in {} sec.'.format(round(time() - t0, 2))
 
 

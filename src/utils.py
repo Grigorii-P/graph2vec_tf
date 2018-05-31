@@ -1,5 +1,6 @@
 import os,json
 
+path_to_labels = '/home/pogorelov/labels_2_and_0.txt'
 
 def get_files(dirname, extn, max_files=0):
     all_files = [os.path.join(dirname, f) for f in os.listdir(dirname) if f.endswith(extn)]
@@ -7,6 +8,10 @@ def get_files(dirname, extn, max_files=0):
         for f in files:
             if f.endswith(extn):
                 all_files.append(os.path.join(root, f))
+
+    with open(path_to_labels, 'r') as file:
+        labels = json.loads(file.read())
+    all_files = [x for x in all_files if (x.split('/')[-1]).split('.')[0] in labels]
 
     all_files = list(set(all_files))
     all_files.sort()
